@@ -15,6 +15,7 @@ class BaseDataKai(object):
         self.tdays_df.index = self.tdays_df.index.astype('str')
         self.ic_df = pd.read_excel(self.path+'\\ic_wind_constituent.xls', index_col=0)
         self.if_df = pd.read_excel(self.path+'\\if_wind_constituent.xls', index_col=0)
+        self.st_df = pd.read_excel(self.path+'\\st_wind_constituent.xls', index_col=0)
 
         self.update = False
 
@@ -36,3 +37,4 @@ class BaseDataKai(object):
         update_base_data.get_holder_info()
         # 更新日期df
         update_base_data.get_tdays()
+

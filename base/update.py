@@ -1,4 +1,5 @@
 # -*- coding:utf-8 -*-
+__author__ = 'kaI'
 import pandas as pd
 from WindPy import *
 import datetime

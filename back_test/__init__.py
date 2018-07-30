@@ -7,6 +7,10 @@ sys.setdefaultencoding('utf-8')
 
 class BackTestDataKai(object):
     def __init__(self, all_a_stock_df, tdays_df):
+        """数据初始化"""
+        self.all_a_stock_df = all_a_stock_df
+        self.tdays_df = tdays_df
+
         self.path = os.path.join(os.getcwd(), 'back_test\\stock_data')
         self.all_a_stock_df = all_a_stock_df
         self.tdays_df = tdays_df
@@ -30,3 +34,4 @@ class BackTestDataKai(object):
         update_back_test_data.update_allAvwap()
         update_back_test_data.update_indexClose()
         update_back_test_data.update_ipo_date()
+        self.__init__(all_a_stock_df=self.all_a_stock_df, tdays_df=self.tdays_df)
