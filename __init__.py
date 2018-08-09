@@ -76,3 +76,15 @@ class ToolKai(object):
         else:
             suspend_df = pd.read_excel(os.path.join(data_path+str(end_date)+'.xls'))
         return drop_suspend_stocks(df=df, suspend_df=suspend_df)
+
+    def get_industry_diviation(self, strategy_df, index_name):
+        """计算策略行业偏离"""
+        if index_name.lower() == 'ic':
+            industry_df = self.ic_df
+        elif index_name.lower == 'if':
+            industry_df = self.if_df
+        else:
+            return None
+        return get_industry_diviation(strategy_df=strategy_df,
+                                      industry_df=industry_df,
+                                      all_a_stock_df=self.all_a_stock_df)
