@@ -71,3 +71,86 @@ def get_tdays(day_list, col_name):
     tdays_dataframe = tdays_dataframe[day_list[0]:day_list[-1]]
     tdays_dataframe = tdays_dataframe[tdays_dataframe[col_name] == 1]
     return tdays_dataframe.index.tolist()
+
+
+def wind_data_to_df(wind_data):
+    save_df = pd.DataFrame(index=wind_data.Codes)
+    for col, data in zip(wind_data.Fields, wind_data.Data):
+        save_df[col] = data
+    return save_df
+
+
+def get_front_financial_date(trade_date, kai_tdays_df, num, ahead):
+    """:return 前N季度末日期"""
+    season_date_list = ['03-31', '06-30', '09-30', '12-31']
+    financial_date_list = []
+    tdays_df = kai_tdays_df.loc[:trade_date]
+    for day in range(1+ahead, len(tdays_df)):
+        if num <= 0:
+            break
+        if tdays_df.index[-day][5:] in season_date_list:
+            financial_date_list.append(tdays_df.index[-day])
+            num -= 1
+    return financial_date_list
+
+
+def get_front_trade_date(trade_date, kai_tdays_df, period, num, ahead):
+    tdays_df = kai_tdays_df.loc[:trade_date]
+    tdays_df = tdays_df[tdays_df['tradedays_'+period] == 1]
+    trade_date_list = []
+    for day in range(1+ahead, len(tdays_df)):
+        if num <= 0:
+            break
+        trade_date_list.append(tdays_df.index[-day])
+        num -= 1
+    return trade_date_list
+
+
+def is_trade_time(date_str, style, tdays_df):
+    tdays_df = tdays_df[tdays_df['tradedays_d'] == 1]
+    time_dict = {
+        'stock': [
+            ['09:25:00', '11:30:00'],
+            ['13:00:00', '15:00:00']
+        ],
+        'future': [
+            ['08:55:00', '10:15:00'],
+            ['10:30:00', '11:30:00'],
+            ['13:30:00', '15:00:00'],
+            ['21:00:00', '23:30:00']
+        ]
+    }
+    if '-' in date_str or '/' in date_str:
+        print date_str
+        if ':' in date_str:
+            date = date_str[:10]
+            time = date_str[-8:]
+        else:
+            date = date_str
+            time = False
+    elif ':' in date_str:
+        date = False
+        time = date_str
+    else:
+        print u'未识别格式'
+        return None
+    if date:
+        if date in tdays_df.index.tolist():
+            trade_date = True
+        else:
+            trade_date = False
+    else:
+        trade_date = True
+    if time:
+        trade_time = False
+        for section in time_dict[style]:
+            if section[0] <= time <= section[1]:
+                trade_time = True
+                break
+    else:
+        trade_time = True
+    if trade_date and trade_time:
+        return True
+    else:
+        return False
+

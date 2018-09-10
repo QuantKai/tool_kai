@@ -88,3 +88,19 @@ class ToolKai(object):
         return get_industry_diviation(strategy_df=strategy_df,
                                       industry_df=industry_df,
                                       all_a_stock_df=self.all_a_stock_df)
+
+    def wind_to_df(self, wind_data):
+        return wind_data_to_df(wind_data=wind_data)
+
+    def get_front_financial_date(self, trade_date, num=2, ahead=0):
+        """:return 前N季度末日期"""
+        return get_front_financial_date(trade_date=trade_date, kai_tdays_df=self.tdays_df, num=num, ahead=ahead)
+
+    def get_front_trade_date(self, trade_date, period='w', num=2, ahead=0):
+        """:return 前N交易类型交易日"""
+        return get_front_trade_date(trade_date=trade_date, kai_tdays_df=self.tdays_df,
+                                    period=period, num=num, ahead=ahead)
+
+    def is_trade_time(self, date_str, style='stock'):
+        """判断是否是交易时间"""
+        return is_trade_time(date_str=date_str, style=style, tdays_df=self.tdays_df)
