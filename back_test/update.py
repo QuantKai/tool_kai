@@ -57,8 +57,10 @@ class UpdateBackTestData(object):
             new_df = pd.DataFrame(index=[str(data).split(' ')[0] for data in wind_data.Times])
             for stock_num in range(len(self.all_a_stock)):
                 new_df[self.all_a_stock[stock_num]] = wind_data.Data[stock_num]
+            new_df.index = pd.to_datetime(new_df.index)
+            new_df.index = [inn.strftime('%Y-%m-%d') for inn in new_df.index]
             allAamt_df.drop([allAamt_df.index.tolist()[-1]], inplace=True)
-            allAamt_df = allAamt_df.append(new_df)
+            allAamt_df = allAamt_df.append(new_df, sort=True)
         else:
             print u'无需下载allAamt数据'
         allAamt_df.to_csv(os.path.join(self.path, self.allAamt))
@@ -79,8 +81,10 @@ class UpdateBackTestData(object):
             new_df = pd.DataFrame(index=[str(data).split(' ')[0] for data in wind_data.Times])
             for stock_num in range(len(self.all_a_stock)):
                 new_df[self.all_a_stock[stock_num]] = wind_data.Data[stock_num]
+            new_df.index = pd.to_datetime(new_df.index)
+            new_df.index = [inn.strftime('%Y-%m-%d') for inn in new_df.index]
             allAclose_df.drop([allAclose_df.index.tolist()[-1]], inplace=True)
-            allAclose_df = allAclose_df.append(new_df)
+            allAclose_df = allAclose_df.append(new_df, sort=True)
         else:
             print u'无需下载allAclose数据'
         allAclose_df.to_csv(os.path.join(self.path, self.allAclose))
@@ -101,8 +105,10 @@ class UpdateBackTestData(object):
             new_df = pd.DataFrame(index=[str(data).split(' ')[0] for data in wind_data.Times])
             for stock_num in range(len(self.all_a_stock)):
                 new_df[self.all_a_stock[stock_num]] = wind_data.Data[stock_num]
+            new_df.index = pd.to_datetime(new_df.index)
+            new_df.index = [inn.strftime('%Y-%m-%d') for inn in new_df.index]
             allAvwap_df.drop([allAvwap_df.index.tolist()[-1]], inplace=True)
-            allAvwap_df = allAvwap_df.append(new_df)
+            allAvwap_df = allAvwap_df.append(new_df, sort=True)
         else:
             print u'无需下载allAvwap数据'
         allAvwap_df.to_csv(os.path.join(self.path, self.allAvwap))
@@ -124,8 +130,10 @@ class UpdateBackTestData(object):
             new_df = pd.DataFrame(index=[str(data).split(' ')[0] for data in wind_data.Times])
             for stock_num in range(len(wind_data.Codes)):
                 new_df[wind_data.Codes[stock_num]] = wind_data.Data[stock_num]
+            new_df.index = pd.to_datetime(new_df.index)
+            new_df.index = [inn.strftime('%Y-%m-%d') for inn in new_df.index]
             indexClose_df.drop([indexClose_df.index.tolist()[-1]], inplace=True)
-            indexClose_df = indexClose_df.append(new_df)
+            indexClose_df = indexClose_df.append(new_df, sort=True)
         else:
             print u'无需下载indexClose数据'
         indexClose_df.to_csv(os.path.join(self.path, self.indexClose))
@@ -143,7 +151,7 @@ class UpdateBackTestData(object):
         else:
             new_df = pd.DataFrame()
             print u'无需下载ipo_date数据'
-        ipo_date_df = ipo_date_df.append(new_df)
+        ipo_date_df = ipo_date_df.append(new_df, sort=True)
         ipo_date_df.to_csv(os.path.join(self.path, self.ipo_date))
 
 
